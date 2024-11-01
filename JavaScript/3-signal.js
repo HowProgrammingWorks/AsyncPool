@@ -66,13 +66,14 @@ class Pool {
     const index = this.#instances.indexOf(instance);
     if (index < 0) throw new Error('Pool: release unexpected instance');
     if (this.#free[index]) throw new Error('Pool: release not captured');
-    this.#free[index] = true;
-    this.#available++;
     if (this.#queue.length > 0) {
       const { resolve, signal, listener } = this.#queue.shift();
       signal.removeEventListener('abort', listener);
       if (resolve) setTimeout(resolve, 0, instance);
+      return;
     }
+    this.#free[index] = true;
+    this.#available++;
   }
 }
 
