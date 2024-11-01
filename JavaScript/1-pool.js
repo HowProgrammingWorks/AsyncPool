@@ -19,7 +19,6 @@ class Pool {
   }
 
   async next() {
-    console.log({ available: this.#available });
     if (this.#available === 0) {
       return new Promise((resolve) => {
         this.#queue.push(resolve);
@@ -95,11 +94,9 @@ const main = async () => {
 
   for (let i = 0; i < 12; i++) {
     const instance = await pool.getInstance();
-    console.log({ instance });
+    console.log(instance);
     if (i < 2) returning.push(instance);
   }
 };
-
-console.log('start');
 
 main();
